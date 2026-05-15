@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-smoke:
+    name: Repository smoke checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify required project docs
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            README.md
+            SECURITY.md
+            CONTRIBUTING.md
+            docs/product/vision.md
+            docs/product/principles.md
+            docs/product/roadmap.md
+            docs/architecture/overview.md
+            docs/scrum/definition-of-done.md
+            docs/scrum/sprint-0.md
+            docs/scrum/drift-keeping.md
+            docs/scrum/github-project-board.md
+          )
+
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "Missing required file: $file"; exit 1; }
+          done
+
+  go:
+    name: Go build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect Go module
+        id: gomod
+        shell: bash
+        run: |
+          if [ -f go.mod ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "No go.mod yet; skipping Go checks until the scaffold exists."
+          fi
+
+      - name: Set up Go
+        if: steps.gomod.outputs.exists == 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Check formatting
+        if: steps.gomod.outputs.exists == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "Files need gofmt:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Test
+        if: steps.gomod.outputs.exists == 'true'
+        run: go test ./...
+
+      - name: Build
+        if: steps.gomod.outputs.exists == 'true'
+        run: go build ./cmd/esx9s
