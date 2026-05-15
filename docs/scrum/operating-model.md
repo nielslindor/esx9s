@@ -7,10 +7,20 @@ Use GitHub as the source of truth for esx9s.
 Reason:
 
 - The repo already lives on GitHub
-- Code, issues, pull requests, reviews, CI, releases, and documentation can stay together
-- GitHub Issues are enough for the current project size
+- Code, issues, pull requests, reviews, CI, releases, documentation, and the project board can stay together
+- GitHub Issues and Projects are enough for the current project size
 - Adding Asana now would create duplicate task state
 - GitLab is not needed unless the repository moves there later
+
+## Asana decision
+
+Do not use Asana for active esx9s execution yet.
+
+Asana may become useful later for high-level business planning, partnership work, content, launch planning, or non-code company operations. It should not mirror GitHub issues.
+
+Rule:
+
+> GitHub owns product and engineering execution. Asana, if added later, owns business/process work only.
 
 ## Working model
 
@@ -20,23 +30,29 @@ Use a lightweight Scrum/Kanban hybrid:
 - Architecture decisions live in `docs/adr/`
 - Project rules live in `docs/scrum/`
 - Work items live in GitHub Issues
+- The active board lives in GitHub Projects: `esx9s Kanban`
 - Code changes happen through pull requests
-- Releases are tracked by milestones
+- Releases are tracked by milestones or roadmap items
 
 ## Board columns
 
-Recommended GitHub Project columns:
+Use the active GitHub Project columns:
 
-1. Inbox
+1. Backlog
 2. Ready
-3. In Progress
-4. Review
+3. In progress
+4. In review
 5. Done
-6. Parked
+
+Optional later column:
+
+- Parked
+
+If Parked does not exist, keep parked ideas in Backlog and mark them clearly as parked in the issue body or `docs/scrum/drift-keeping.md`.
 
 ## Issue types
 
-Use title prefixes until labels are created:
+Use title prefixes until GitHub issue types/labels are fully configured:
 
 - `[Epic]`
 - `[Story]`
@@ -48,7 +64,7 @@ Use title prefixes until labels are created:
 
 ## Priorities
 
-Use issue body text until labels are created:
+Use issue body text or Project custom fields:
 
 - P0: blocks the project or security
 - P1: needed for current milestone
@@ -73,7 +89,7 @@ Goal: make the repo structured enough that implementation can begin without scop
 
 If it is real work, it must be either:
 
-- a GitHub issue, or
+- a GitHub issue in the `esx9s Kanban` project, or
 - intentionally parked in `docs/scrum/drift-keeping.md`
 
 No invisible backlog in chat.
