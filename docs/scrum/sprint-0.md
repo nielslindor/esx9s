@@ -6,36 +6,47 @@ Create enough structure that esx9s can be built without drifting into a generic 
 
 ## Sprint outcome
 
-By the end of Sprint 0, the project should have:
+At the end of Sprint 0, the project should have:
 
-- product vision
-- architecture decisions
-- initial repo structure
-- first runnable Go skeleton
-- first TUI shell
-- host config format
-- connection spike
+- clear product vision
+- accepted architecture decisions
+- Go project scaffold
+- CI build
+- initial TUI shell
+- secure host config shape
+- connection test spike
 - audit log foundation
 
 ## Sprint rules
 
-- Do not build VM creation yet
-- Do not build datastore transfers yet
-- Do not build Kubernetes plugins yet
-- Do not build advisor/load-balancing features yet
-- Do not work on mascot beyond quick notes
+- No Kubernetes plugin work
+- No mascot implementation work
+- No VM creation work
+- No datastore upload/download work
+- No load-balancing implementation
+- No TV dashboard implementation
 
-## Sprint backlog
+Those are parking-lot items until the operator core exists.
 
-1. Define esx9s product vision
-2. Document workstation-first architecture
-3. Document Go + govmomi/govc decision
-4. Scaffold Go project
-5. Define host config format
-6. Build connection test spike
-7. Build audit log foundation
-8. Build initial TUI shell
+## Definition of done for Sprint 0
 
-## Definition of success
+- README explains the product clearly
+- docs/product and docs/architecture exist
+- ADRs for Go, govmomi/govc, and workstation-first exist
+- backlog exists
+- first runnable binary exists
+- `make test` or equivalent exists
+- at least one host connection can be tested or stubbed
+- audit log format is documented or implemented
 
-Sprint 0 succeeds when a developer can clone the repo, understand what esx9s is, run a placeholder app, and see the exact next technical issue to work on.
+## Primary risk
+
+Scope expansion.
+
+If a task does not directly help build the first operator loop, it should not enter Sprint 0.
+
+First operator loop:
+
+```text
+configure host → test connection → list VMs → select VM → perform safe action → audit result
+```
