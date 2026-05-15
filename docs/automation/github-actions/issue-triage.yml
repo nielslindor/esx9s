@@ -1,0 +1,71 @@
+name: Issue triage
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  triage:
+    name: Label and check issue hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Triage issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title || '';
+            const body = issue.body || '';
+            const lower = `${title}\n${body}`.toLowerCase();
+            const labels = new Set();
+
+            if (title.startsWith('[Epic]')) labels.add('type/epic');
+            if (title.startsWith('[Story]')) labels.add('type/story');
+            if (title.startsWith('[Task]')) labels.add('type/task');
+            if (title.startsWith('[Spike]')) labels.add('type/spike');
+            if (title.startsWith('[Bug]')) labels.add('type/bug');
+            if (title.startsWith('[Docs]')) labels.add('type/docs');
+            if (title.startsWith('[Security]')) labels.add('type/security');
+
+            if (lower.includes('tui') || lower.includes('terminal')) labels.add('area/tui');
+            if (lower.includes('esxi') || lower.includes('vsphere') || lower.includes('govmomi') || lower.includes('govc')) labels.add('area/esxi');
+            if (lower.includes('vm ') || lower.includes('virtual machine')) labels.add('area/vm');
+            if (lower.includes('datastore') || lower.includes('iso')) labels.add('area/datastore');
+            if (lower.includes('host ')) labels.add('area/host');
+            if (lower.includes('network') || lower.includes('vswitch') || lower.includes('port group')) labels.add('area/network');
+            if (lower.includes('audit') || lower.includes('jsonl')) labels.add('area/audit');
+            if (lower.includes('config') || lower.includes('yaml') || lower.includes('toml')) labels.add('area/config');
+            if (lower.includes('credential') || lower.includes('secret') || lower.includes('password') || lower.includes('security')) labels.add('area/security');
+            if (lower.includes('docs/') || lower.includes('adr') || lower.includes('documentation')) labels.add('area/docs');
+
+            if (lower.includes('p0')) labels.add('prio/P0');
+            else if (lower.includes('p1')) labels.add('prio/P1');
+            else if (lower.includes('p2')) labels.add('prio/P2');
+
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: Array.from(labels)
+              });
+            }
+
+            const needsAcceptance = !lower.includes('acceptance criteria');
+            const needsNonGoals = !lower.includes('non-goals');
+            if (needsAcceptance || needsNonGoals) {
+              const missing = [];
+              if (needsAcceptance) missing.push('Acceptance criteria');
+              if (needsNonGoals) missing.push('Non-goals');
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Project hygiene check: missing ${missing.join(' and ')}. Please refine before moving this to Ready.`
+              });
+            }
