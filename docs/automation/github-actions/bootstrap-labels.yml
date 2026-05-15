@@ -1,0 +1,77 @@
+name: Bootstrap labels
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  labels:
+    name: Create project labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              ['type/epic', '7057ff', 'Large parent initiative or release-level work'],
+              ['type/story', '0e8a16', 'Operator-visible outcome'],
+              ['type/task', '1d76db', 'Implementation task'],
+              ['type/spike', 'fbca04', 'Time-boxed research or proof of concept'],
+              ['type/bug', 'd73a4a', 'Broken expected behavior'],
+              ['type/docs', '0075ca', 'Documentation work'],
+              ['type/security', 'b60205', 'Security-sensitive work'],
+
+              ['area/tui', 'c5def5', 'Terminal UI and interaction'],
+              ['area/esxi', 'c5def5', 'ESXi/vSphere integration'],
+              ['area/vm', 'c5def5', 'Virtual machine operations'],
+              ['area/datastore', 'c5def5', 'Datastore operations'],
+              ['area/host', 'c5def5', 'Host operations'],
+              ['area/network', 'c5def5', 'Networking'],
+              ['area/audit', 'c5def5', 'Audit logging'],
+              ['area/config', 'c5def5', 'Configuration'],
+              ['area/security', 'c5def5', 'Security model'],
+              ['area/docs', 'c5def5', 'Docs and ADRs'],
+
+              ['prio/P0', 'b60205', 'Blocks project, release, or security'],
+              ['prio/P1', 'd93f0b', 'Needed for current milestone'],
+              ['prio/P2', 'fbca04', 'Useful later'],
+
+              ['status/ready', '0e8a16', 'Ready to start'],
+              ['status/in-progress', '1d76db', 'Being worked on'],
+              ['status/review', '5319e7', 'Needs review'],
+              ['status/blocked', 'b60205', 'Blocked'],
+              ['status/parked', '6a737d', 'Valid but intentionally parked'],
+
+              ['good-first-issue', '7057ff', 'Good contributor starter issue']
+            ];
+
+            for (const [name, color, description] of labels) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  color,
+                  description
+                });
+                core.info(`Created ${name}`);
+              } catch (error) {
+                if (error.status === 422) {
+                  await github.rest.issues.updateLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name,
+                    color,
+                    description
+                  });
+                  core.info(`Updated ${name}`);
+                } else {
+                  throw error;
+                }
+              }
+            }
