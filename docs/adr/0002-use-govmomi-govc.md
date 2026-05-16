@@ -14,7 +14,7 @@ Direct SSH commands are tempting, but they increase parsing fragility, permissio
 
 Use govmomi as the primary Go library and govc behavior as the operational reference model.
 
-SSH may exist later as a constrained fallback for host-specific tasks, but it must not be the core abstraction.
+SSH may exist later as a constrained, allowlisted fallback for host-specific tasks, but it must not be the core abstraction.
 
 ## Consequences
 

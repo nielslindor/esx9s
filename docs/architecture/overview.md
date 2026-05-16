@@ -56,3 +56,6 @@ select object → choose action → build plan → confirm → apply → audit r
 ```
 
 Destructive actions must never skip confirm/apply.
+
+The audit event contract and example JSONL records are documented in
+[Audit Log](audit-log.md).

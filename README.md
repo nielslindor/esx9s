@@ -4,6 +4,52 @@ A k9s-inspired terminal operator console for standalone ESXi fleets.
 
 esx9s is not a k9s fork and not an open-source vCenter clone. The product goal is narrower and sharper: give homelabbers, small environments, and ops-focused engineers a lightweight, secure, beautiful TUI for managing multiple standalone ESXi hosts without requiring vCenter.
 
+## Quickstart
+
+Prerequisites:
+
+- Go 1.24 or newer
+- Make
+
+Run the mock TUI:
+
+```sh
+make run
+```
+
+Useful development commands:
+
+```sh
+make test
+make fmt
+make build
+```
+
+To use a specific local Go toolchain, set `GO`:
+
+```sh
+GO=/Users/mijnbeen/.cache/esx9s-tools/go/bin/go make test
+```
+
+Print the scaffold version:
+
+```sh
+make build
+./bin/esx9s --version
+```
+
+Run mock mode directly:
+
+```sh
+go run ./cmd/esx9s --mock
+```
+
+Probe an ESXi SDK endpoint:
+
+```sh
+go run ./cmd/esx9s connect-test --endpoint https://HOST/sdk
+```
+
 ## Product positioning
 
 **One sentence:** esx9s is a lightweight terminal operator for standalone ESXi fleets.

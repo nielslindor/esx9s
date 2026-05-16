@@ -1,0 +1,5 @@
+bin/
+/esx9s
+*.test
+coverage.out
+.DS_Store

@@ -1,0 +1,38 @@
+# esx9s example configuration
+#
+# Keep this file on a trusted workstation or admin jumpbox. Do not store
+# passwords, API tokens, session cookies, or private keys in this file.
+
+version: 1
+
+hosts:
+  - name: lab-esxi-01
+    address: esxi01.lab.example.com
+    endpoint: https://esxi01.lab.example.com/sdk
+    username: root
+    auth:
+      method: prompt
+    tls:
+      insecure_skip_verify: false
+
+  - name: lab-esxi-02
+    address: 192.0.2.42
+    endpoint: https://192.0.2.42/sdk
+    username: esx9s-operator
+    auth:
+      method: prompt
+    tls:
+      # Warning: only use this for isolated labs or hosts with temporary
+      # self-signed certificates. Prefer installing trusted certificates.
+      insecure_skip_verify: true
+
+  - name: edge-esxi-01
+    address: edge-esxi-01.example.net
+    endpoint: https://edge-esxi-01.example.net/sdk
+    username: ops-user
+    auth:
+      method: keychain
+      service: esx9s
+      account: edge-esxi-01
+    tls:
+      insecure_skip_verify: false
