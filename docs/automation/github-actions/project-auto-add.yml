@@ -1,0 +1,33 @@
+name: Project auto-add
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  add-to-project:
+    name: Add item to GitHub Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue or PR to project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/nielslindor/projects/4
+          github-token: ${{ secrets.GH_PROJECT_TOKEN }}
+
+# Required setup:
+# 1. Create a fine-grained PAT with access to this repo and project.
+# 2. Give it project read/write permissions.
+# 3. Add it as repository secret: GH_PROJECT_TOKEN.
+#
+# Note:
+# Prefer GitHub Projects built-in workflows for status transitions.
+# This workflow is only for auto-adding repo issues/PRs if the built-in auto-add filter is not enough.
