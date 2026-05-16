@@ -6,6 +6,8 @@ The current focus is `v0.1 - Operator Core`.
 
 Do not pull future release scope into v0.1 unless it directly enables the first working operator loop.
 
+The durable goal is larger than v0.1: oneshot esx9s into a k9s-for-ESXi terminal control plane with vCenter-like day-2 functionality. Future work should be decomposed into issues instead of dropped when context compresses.
+
 ## v0.1 - Operator Core
 
 Goal: manage multiple standalone ESXi hosts safely from a first TUI.

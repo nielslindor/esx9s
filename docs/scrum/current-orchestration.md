@@ -4,7 +4,9 @@ Last reconciled: 2026-05-16
 
 ## Durable Context Rule
 
-The GitHub issues and `esx9s Kanban` project are the source of truth. Do not rely on chat history for sequencing, blocked state, or scope boundaries.
+The GitHub issues and `esx9s Kanban` project are the source of truth. Do not rely on chat history for sequencing, blocked state, or scope boundaries. Context compression will happen; the project has to remember the mission.
+
+The mission is not merely the next issue. The mission is to oneshot the entire k9s-for-ESXi control plane with vCenter-like day-2 functionality.
 
 When a Codex session starts:
 
@@ -50,6 +52,12 @@ Issues closed as satisfied by `50db545`:
 
 - #21: Versioning and release foundation
 - #24: Real ESXi read-only provider
+- #37: Oneshot esx9s vCenter-like terminal control plane
+- #38: v0.2 Datastore and ISO operator
+- #39: v0.3 VM lifecycle operator
+- #40: v0.4 Host, networking, tasks, and events operator
+- #41: v0.5 Fleet operations and placement
+- #42: v1.0 Stable vCenter-like small fleet release
 
 ## Open Work Queue
 
@@ -78,11 +86,21 @@ TUI/operator workflow:
 Safety/CI:
 
 - #35: Add CI secret and lab-detail guard
+- #43: Build vCenter functionality capability matrix
 
 Real write actions:
 
 - #14: Implement safe VM power actions
 - #16: Implement snapshot create/delete flow
+
+Long-range epics:
+
+- #37: Oneshot full product
+- #38: Datastore and ISO operator
+- #39: VM lifecycle operator
+- #40: Host/networking/tasks/events operator
+- #41: Fleet operations and placement
+- #42: Stable vCenter-like small fleet release
 
 ## Execution Order
 
@@ -90,20 +108,22 @@ Do this next:
 
 1. #22 versioning policy
 2. #23 release checklist
-3. #35 CI secret and lab-detail guard
-4. #25 first pre-release tag
-5. #26 credential input layer
-6. #27 govmomi login/logout
-7. #29 opt-in integration harness
-8. #28 read-only inventory provider
-9. #30 config-mode TUI
-10. #31 VM detail view
-11. #34 default audit path
-12. #33 action preview/confirmation screen
-13. #32 TUI VM action menus
-14. #14 real safe VM power actions
-15. #16 real snapshot actions
-16. #36 safe real-ESXi quickstart, updated with whatever reality was learned
+3. #43 vCenter functionality capability matrix
+4. #35 CI secret and lab-detail guard
+5. #25 first pre-release tag
+6. #26 credential input layer
+7. #27 govmomi login/logout
+8. #29 opt-in integration harness
+9. #28 read-only inventory provider
+10. #30 config-mode TUI
+11. #31 VM detail view
+12. #34 default audit path
+13. #33 action preview/confirmation screen
+14. #32 TUI VM action menus
+15. #14 real safe VM power actions
+16. #16 real snapshot actions
+17. #36 safe real-ESXi quickstart, updated with whatever reality was learned
+18. Continue through #38, #39, #40, #41, and #42 until the full product is complete.
 
 ## Safety Gates
 
@@ -124,8 +144,13 @@ Still not now:
 - Kubernetes
 - Web UI
 - AI remediation
-- vCenter replacement scope
 - HA/vMotion/DRS replacement claims
 - Raw SSH command runner
+
+Allowed as the north star:
+
+- vCenter-like day-2 functionality from a terminal UI
+- optional vCenter provider/backend later where standalone ESXi cannot honestly provide a capability
+- explicit capability matrix to prevent false claims
 
 Park useful side ideas as issues with `phase:later` and `drift-control`, then return to the current queue.
