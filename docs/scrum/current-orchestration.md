@@ -14,7 +14,8 @@ When a Codex session starts:
 2. Inspect open GitHub issues.
 3. Inspect the project board.
 4. Pick the highest-priority Ready issue that is not blocked.
-5. Update issues/project state as work changes.
+5. Use `docs/scrum/subagent-operating-model.md` for delegation.
+6. Update issues/project state as work changes.
 
 ## Foundation Baseline
 
@@ -38,6 +39,8 @@ The board now contains:
 - Priority and size fields for the active lane
 
 If the board and this file disagree, reconcile the board first and then update this file.
+
+Use the board column over `status:*` labels when deciding what to spawn. Several issue labels are broad planning metadata; the column and issue blockers decide readiness.
 
 ## Closed Foundation Work
 
@@ -104,7 +107,16 @@ Long-range epics:
 
 ## Execution Order
 
-Do this next:
+Parallelize this current batch with the subagent model:
+
+- #22 and #23: release docs lane
+- #35: CI/security lane
+- #26: credential provider prerequisite lane
+- #43: capability matrix lane
+
+Do not spawn #25, #27, #28, #29, #14, or #16 until their blockers are satisfied.
+
+Overall order:
 
 1. #22 versioning policy
 2. #23 release checklist
